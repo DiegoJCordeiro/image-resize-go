@@ -49,3 +49,10 @@ O objetivo desta API é:
 | ***Terraform***          | Utilizado para consultar a documentação Terraform.          | [Link](https://developer.hashicorp.com/terraform/tutorials/recommended-patterns) |
 | ***AWS***                | Utilizado para consultar a documentação AWS.                | [Link](https://docs.aws.amazon.com/)                         |
 
+<hr>
+
+#### **Redes sociais**
+
+*Se estiver com alguma dúvida, se sinta a vontade para me chamar em alguma das redes sociais.*
+
+[![Linkedin Badge](https://camo.githubusercontent.com/2e3d87609f3276ade0653bcdedb12d2feb6290dfff3eb1261607e31ffa1df76c/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f2d4c696e6b6564696e2d626c75653f7374796c653d666f722d7468652d6261646765266c6f676f3d4c696e6b6564696e266c6f676f436f6c6f723d7768697465266c696e6b3d68747470733a2f2f6769746875622e636f6d2f446965676f4a436f72646569726f)](https://www.linkedin.com/in/diego-cordeiro-552948229/) [![Medium Badge](https://camo.githubusercontent.com/63a3ed23d978726df63bb8a00454752940e94add59947b855e8439d0706e561c/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f2d4d656469756d2d626c61636b3f7374796c653d666f722d7468652d6261646765266c6f676f3d4d656469756d266c6f676f436f6c6f723d7768697465266c696e6b3d68747470733a2f2f6769746875622e636f6d2f446965676f4a436f72646569726f)](https://medium.com/@diegocordeiro.contatos)
