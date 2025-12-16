@@ -9,7 +9,6 @@
 - Linguagem: Go
 - Versão: 1.24+
 
-</br>
 <hr>
 
 #### ***Descrição***
