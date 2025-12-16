@@ -14,8 +14,7 @@
 
 #### ***Descrição***
 
-O objetivo desta API desenvolvida com a linguagem Go é: 
-
+O objetivo desta API é: 
 - Receber uma imagem com um determinado tamanho, por exemplo: 1200 x 1480
 - Processar a imagem
 - Redefinir o tamanho da imagem para outro e retornar para o cliente
