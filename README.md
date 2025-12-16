@@ -42,9 +42,10 @@ O objetivo desta API é:
 
 *Seção referente as documentações das tecnologias aplicadas sob o projeto de estudos.*
 
-| Tecnologia      | Descrição                                          | URL                                                          |
-| --------------- | -------------------------------------------------- | ------------------------------------------------------------ |
-| ***Docker***    | Utilizado para consultar a documentação Docker.    | [Link](https://docs.docker.com/get-started/)                 |
-| ***Terraform*** | Utilizado para consultar a documentação Terraform. | [Link](https://developer.hashicorp.com/terraform/tutorials/recommended-patterns) |
-| ***AWS***       | Utilizado para consultar a documentação AWS.       | [Link](https://docs.aws.amazon.com/)                         |
+| Tecnologia               | Descrição                                                   | URL                                                          |
+| ------------------------ | ----------------------------------------------------------- | ------------------------------------------------------------ |
+| ***Clean Architecture*** | Utilizado para consultar a documentação Clean Architecture. | [Link](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) |
+| ***Docker***             | Utilizado para consultar a documentação Docker.             | [Link](https://docs.docker.com/get-started/)                 |
+| ***Terraform***          | Utilizado para consultar a documentação Terraform.          | [Link](https://developer.hashicorp.com/terraform/tutorials/recommended-patterns) |
+| ***AWS***                | Utilizado para consultar a documentação AWS.                | [Link](https://docs.aws.amazon.com/)                         |
 
