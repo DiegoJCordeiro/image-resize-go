@@ -3,7 +3,6 @@
 # Image Resizing API
 
 </br>
-<hr>
 
 #### ***Desenvolvido em***
 
