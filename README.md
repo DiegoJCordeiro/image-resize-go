@@ -22,3 +22,29 @@ O objetivo desta API é:
 
 
 
+<hr>
+
+#### ***Objetivos Técnicos***
+
+*Seção referente aos desejos técnicos que pretendemos aplicar neste ciclo de estudo.*
+
+| Nome                     | Descrição                                                    | Concluído S/N |
+| ------------------------ | ------------------------------------------------------------ | ------------- |
+| ***Clean Architecture*** | Aprender a implementar a estrutura arquitetural do CA.       | N             |
+| ***Testes Unitários***   | Aprender a implementar os testes unitários com Go.           | N             |
+| ***AWS***                | Aprender a implementar integração com serviços AWS.          | N             |
+| ***Terraform***          | Aprender a implementar IAAC com Terraform.                   | N             |
+| ***Docker***             | Aprender a implementar a tecnologia Docker em nossos projetos. | S             |
+
+<hr>
+
+#### ***Documentações***
+
+*Seção referente as documentações das tecnologias aplicadas sob o projeto de estudos.*
+
+| Tecnologia      | Descrição                                          | URL                                                          |
+| --------------- | -------------------------------------------------- | ------------------------------------------------------------ |
+| ***Docker***    | Utilizado para consultar a documentação Docker.    | [Link](https://docs.docker.com/get-started/)                 |
+| ***Terraform*** | Utilizado para consultar a documentação Terraform. | [Link](https://developer.hashicorp.com/terraform/tutorials/recommended-patterns) |
+| ***AWS***       | Utilizado para consultar a documentação AWS.       | [Link](https://docs.aws.amazon.com/)                         |
+
