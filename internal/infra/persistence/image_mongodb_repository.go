@@ -33,8 +33,34 @@ func (imr *ImageMongoDBRepositoryImpl) GetImage(uid string) (*models.ImageModel,
 
 	var imageCollection collections.ImageCollection
 
-	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+	ctx, cancelFunc := context.WithTimeout(context.Background(), 5*time.Second)
+
+	defer cancelFunc()
+
 	filter := bson.D{{Key: "image_id", Value: uid}}
+
+	if err := imr.mongoCollection.FindOne(ctx, filter).Decode(&imageCollection); err != nil {
+		return nil, err
+	}
+
+	return imageCollection.ToModel(), nil
+}
+
+// GetImageByUIDAndIsNotStatus getting an image by uid and status
+func (imr *ImageMongoDBRepositoryImpl) GetImageByUIDAndIsNotStatus(uid string, status string) (*models.ImageModel, error) {
+
+	var imageCollection collections.ImageCollection
+
+	ctx, cancelFunc := context.WithTimeout(context.Background(), 5*time.Second)
+
+	defer cancelFunc()
+
+	filter := bson.D{
+		{Key: "image_id", Value: uid},
+		{Key: "status", Value: bson.D{
+			{Key: "$ne", Value: status},
+		}},
+	}
 
 	if err := imr.mongoCollection.FindOne(ctx, filter).Decode(&imageCollection); err != nil {
 		return nil, err
@@ -75,11 +101,17 @@ func (imr *ImageMongoDBRepositoryImpl) InsertImage(value *models.ImageModel) err
 }
 
 // DeleteImage deleting a image by uid
-func (imr *ImageMongoDBRepositoryImpl) DeleteImage(uid string) error {
+func (imr *ImageMongoDBRepositoryImpl) DeleteImage(uid string, status string) error {
 
-	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+	ctx, cancelFunc := context.WithTimeout(context.Background(), 5*time.Second)
+
+	defer cancelFunc()
+
 	filter := bson.D{{Key: "image_id", Value: uid}}
-	fieldsToUpdate := bson.D{{Key: "$set", Value: bson.D{{Key: "deleted_at", Value: time.Now()}}}}
+	fieldsToUpdate := bson.D{{Key: "$set", Value: bson.D{
+		{Key: "status", Value: status},
+		{Key: "deleted_at", Value: time.Now()},
+	}}}
 
 	_, err := imr.mongoCollection.UpdateOne(ctx, filter, fieldsToUpdate)
 

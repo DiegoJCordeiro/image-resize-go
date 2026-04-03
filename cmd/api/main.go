@@ -7,6 +7,7 @@ import (
 
 	"github.com/DiegoJCordeiro/image-resizing-go-api/internal/configuration"
 	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 	"github.com/redis/go-redis/v9"
 	"go.mongodb.org/mongo-driver/v2/mongo"
 	"go.mongodb.org/mongo-driver/v2/mongo/options"
@@ -44,7 +45,7 @@ func main() {
 
 	getImageUseCase := NewGetImageUseCase(databaseMongoDB, redisClient)
 	insertImageUseCase := NewInsertImageUseCase(imageKafkaProducer, databaseMongoDB, redisClient)
-	deleteImageUseCase := NewDeleteImageUseCase(databaseMongoDB)
+	deleteImageUseCase := NewDeleteImageUseCase(databaseMongoDB, redisClient)
 
 	imageHandlers := NewImageHandler(
 		getImageUseCase,
@@ -54,6 +55,8 @@ func main() {
 
 	chiRouter := chi.NewRouter()
 	chiRouter.Use(DefaultHeaders)
+	chiRouter.Use(middleware.DefaultLogger)
+	chiRouter.Use(middleware.Recoverer)
 
 	chiRouter.Route("/v1", func(r chi.Router) {
 		for key, val := range imageHandlers.GetAllHandlers() {

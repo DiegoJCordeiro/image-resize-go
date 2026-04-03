@@ -65,3 +65,13 @@ func (imr *ImageRedisBRepositoryImpl) PutImage(key string, value *models.ImageMo
 
 	return nil
 }
+
+func (imr *ImageRedisBRepositoryImpl) DeleteImage(key string) error {
+
+	ctx, cancelFunc := context.WithTimeout(context.Background(), time.Second*5)
+	defer cancelFunc()
+
+	imr.redisClient.Del(ctx, redisPrefix+key)
+
+	return nil
+}

@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/DiegoJCordeiro/image-resizing-go-api/internal/domain/models"
+	"github.com/DiegoJCordeiro/image-resizing-go-api/internal/domain/models/status"
 	"go.mongodb.org/mongo-driver/v2/bson"
 )
 
@@ -14,7 +15,7 @@ type ImageCollection struct {
 	Extension    string        `bson:"extension, omitempty"`
 	RelativePath string        `bson:"relative_path, omitempty"`
 	Status       string        `bson:"status, omitempty"`
-	ProcessType  string        `bson:"processType, omitempty"`
+	ProcessType  string        `bson:"process_type, omitempty"`
 	CreatedAt    *time.Time    `bson:"created_at, omitempty"`
 	DeletedAt    *time.Time    `bson:"deleted_at, omitempty"`
 }
@@ -40,7 +41,7 @@ func (ic *ImageCollection) ToModel() *models.ImageModel {
 		FileName:    ic.FileName,
 		Extension:   ic.Extension,
 		FullPath:    ic.RelativePath,
-		Status:      models.Status(ic.Status),
+		Status:      status.Status(ic.Status),
 		ProcessType: models.ProcessType(ic.ProcessType),
 	}
 }

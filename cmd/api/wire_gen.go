@@ -46,9 +46,10 @@ func NewInsertImageUseCase(kafkaProducer events.EventProducer, database *mongo.D
 	return insertImageUseCase
 }
 
-func NewDeleteImageUseCase(database *mongo.Database) usecases.DeleteImageUseCase {
+func NewDeleteImageUseCase(database *mongo.Database, redisClient *redis.Client) usecases.DeleteImageUseCase {
+	imageRedisBRepositoryImpl := cache.NewImageRedisBRepositoryImpl(redisClient)
 	imageMongoDBRepositoryImpl := persistence.NewImageMongoDBRepositoryImpl(database)
-	deleteImageUseCase := usecases.NewDeleteImageUseCase(imageMongoDBRepositoryImpl)
+	deleteImageUseCase := usecases.NewDeleteImageUseCase(imageRedisBRepositoryImpl, imageMongoDBRepositoryImpl)
 	return deleteImageUseCase
 }
 

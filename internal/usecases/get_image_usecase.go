@@ -2,6 +2,7 @@ package usecases
 
 import (
 	"github.com/DiegoJCordeiro/image-resizing-go-api/internal/domain/models"
+	"github.com/DiegoJCordeiro/image-resizing-go-api/internal/domain/models/status"
 	"github.com/DiegoJCordeiro/image-resizing-go-api/internal/domain/repositories"
 	"github.com/DiegoJCordeiro/image-resizing-go-api/internal/domain/storage"
 )
@@ -63,7 +64,7 @@ func (giuc *GetImageUseCaseImpl) getImageFromCache(uid string) (*models.ImageMod
 
 func (giuc *GetImageUseCaseImpl) getImageFromDatabase(uid string) (*models.ImageModel, error) {
 
-	imageFound, err := giuc.noSqlRepository.GetImage(uid)
+	imageFound, err := giuc.noSqlRepository.GetImageByUIDAndIsNotStatus(uid, string(status.Deleted))
 
 	if err != nil {
 		return nil, err

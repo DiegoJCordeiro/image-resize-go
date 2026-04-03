@@ -8,6 +8,7 @@ import (
 
 	"github.com/DiegoJCordeiro/image-resizing-go-api/internal/infra/http/handlers/handlersdto"
 	"github.com/DiegoJCordeiro/image-resizing-go-api/internal/usecases"
+	"github.com/go-chi/render"
 )
 
 type ImageHandler struct {
@@ -35,7 +36,7 @@ func (iih *ImageHandler) GetImage(w http.ResponseWriter, r *http.Request) {
 	imageModel, err := iih.getImageUseCase.Execute(imageUid)
 
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
+		_ = render.Render(w, r, handlersdto.NewErrorDTO(http.StatusInternalServerError, err))
 		return
 	}
 
@@ -47,7 +48,7 @@ func (iih *ImageHandler) GetImage(w http.ResponseWriter, r *http.Request) {
 	imageMarshal, err := json.Marshal(imageDto)
 
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
+		_ = render.Render(w, r, handlersdto.NewErrorDTO(http.StatusInternalServerError, err))
 		return
 	}
 
@@ -55,7 +56,7 @@ func (iih *ImageHandler) GetImage(w http.ResponseWriter, r *http.Request) {
 	_, err = w.Write(imageMarshal)
 
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
+		_ = render.Render(w, r, handlersdto.NewErrorDTO(http.StatusInternalServerError, err))
 		return
 	}
 }
@@ -66,7 +67,7 @@ func (iih *ImageHandler) InsertImage(w http.ResponseWriter, r *http.Request) {
 	formFile, headerFile, err := r.FormFile("imageFile")
 
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		_ = render.Render(w, r, handlersdto.NewErrorDTO(http.StatusBadRequest, err))
 		return
 	}
 
@@ -75,23 +76,34 @@ func (iih *ImageHandler) InsertImage(w http.ResponseWriter, r *http.Request) {
 	fileInBytes, err = io.ReadAll(formFile)
 
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
+		_ = render.Render(w, r, handlersdto.NewErrorDTO(http.StatusInternalServerError, err))
 		return
 	}
 
-	err = iih.insertImageUseCase.Execute(
+	uid, err := iih.insertImageUseCase.Execute(
 		headerFile.Filename,
 		filepath.Ext(headerFile.Filename),
 		r.Header.Get("x-process-type"),
 		fileInBytes,
 	)
 
+	imageInserted := handlersdto.NewImageInsertedDTO(uid)
+
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
+		_ = render.Render(w, r, handlersdto.NewErrorDTO(http.StatusInternalServerError, err))
 		return
 	}
 
-	w.WriteHeader(http.StatusCreated)
+	w.WriteHeader(http.StatusOK)
+
+	imageMarshal, err := json.Marshal(imageInserted)
+	_, err = w.Write(imageMarshal)
+
+	if err != nil {
+		_ = render.Render(w, r, handlersdto.NewErrorDTO(http.StatusInternalServerError, err))
+		return
+	}
+
 	return
 }
 
@@ -102,7 +114,7 @@ func (iih *ImageHandler) DeleteImage(w http.ResponseWriter, r *http.Request) {
 	err := iih.deleteImageUseCase.Execute(imageUid)
 
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
+		_ = render.Render(w, r, handlersdto.NewErrorDTO(http.StatusInternalServerError, err))
 		return
 	}
 

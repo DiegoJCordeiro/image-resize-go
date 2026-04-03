@@ -79,10 +79,11 @@ func NewInsertImageUseCase(kafkaProducer events.EventProducer, database *mongo.D
 	return &usecases.InsertImageUseCaseImpl{}
 }
 
-func NewDeleteImageUseCase(database *mongo.Database) usecases.DeleteImageUseCase {
+func NewDeleteImageUseCase(database *mongo.Database, redisClient *redis.Client) usecases.DeleteImageUseCase {
 
 	wire.Build(
 		setMongoDBRepositoryDependency,
+		setRedisRepositoryDependency,
 		usecases.NewDeleteImageUseCase,
 	)
 

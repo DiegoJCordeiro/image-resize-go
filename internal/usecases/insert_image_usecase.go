@@ -8,13 +8,20 @@ import (
 
 	"github.com/DiegoJCordeiro/image-resizing-go-api/internal/domain/events"
 	"github.com/DiegoJCordeiro/image-resizing-go-api/internal/domain/models"
+	"github.com/DiegoJCordeiro/image-resizing-go-api/internal/domain/models/status"
 	"github.com/DiegoJCordeiro/image-resizing-go-api/internal/domain/repositories"
 	"github.com/DiegoJCordeiro/image-resizing-go-api/internal/domain/storage"
 	"github.com/google/uuid"
 )
 
+var (
+	extensionsAllowed = [4]string{
+		".jpg", ".png", ".jpeg", ".gif",
+	}
+)
+
 type InsertImageUseCase interface {
-	Execute(filename, extension string, processType string, object []byte) error
+	Execute(filename, extension string, processType string, object []byte) (string, error)
 }
 
 type InsertImageUseCaseImpl struct {
@@ -38,7 +45,11 @@ func NewInsertImageUseCase(
 	}
 }
 
-func (iuc *InsertImageUseCaseImpl) Execute(filename, extension string, processType string, object []byte) error {
+func (iuc *InsertImageUseCaseImpl) Execute(filename, extension string, processType string, object []byte) (string, error) {
+
+	if iuc.isExtensionValid(extension) == false {
+		return "", fmt.Errorf("extension %s is invalid", extension)
+	}
 
 	ctxParent := context.Background()
 	ctxTimeout, cancelFunc := context.WithTimeout(ctxParent, time.Second*2)
@@ -58,7 +69,7 @@ func (iuc *InsertImageUseCaseImpl) Execute(filename, extension string, processTy
 		prefixS3,
 		object,
 		models.ProcessType(processType),
-		models.InProgress,
+		status.InProgress,
 	)
 
 	go iuc.publishAtStorage(imageModel, errChan)
@@ -68,10 +79,21 @@ func (iuc *InsertImageUseCaseImpl) Execute(filename, extension string, processTy
 
 	select {
 	case err := <-errChan:
-		return fmt.Errorf("[InsertImage] - [Error]: %s", err.Error())
+		return "", fmt.Errorf("[InsertImage] - [Error]: %s", err.Error())
 	case <-ctxTimeout.Done():
-		return nil
+		return imageUUID.String(), nil
 	}
+}
+
+func (iuc *InsertImageUseCaseImpl) isExtensionValid(extension string) bool {
+
+	for _, allowed := range extensionsAllowed {
+		if extension == allowed {
+			return true
+		}
+	}
+
+	return false
 }
 
 func (iuc *InsertImageUseCaseImpl) persistenceAtCache(imageModel *models.ImageModel, chanErr chan<- error) {
