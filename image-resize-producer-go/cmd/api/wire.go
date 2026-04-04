@@ -55,7 +55,7 @@ func NewImageHandler(
 }
 
 // UseCases
-func NewGetImageUseCase(database *mongo.Database, redisClient *redis.Client) usecases.GetImageUseCase {
+func NewGetImageUseCase(database *mongo.Database, redisClient *redis.Client, awsEndpoint string) usecases.GetImageUseCase {
 
 	wire.Build(
 		setS3Dependency,
@@ -67,7 +67,7 @@ func NewGetImageUseCase(database *mongo.Database, redisClient *redis.Client) use
 	return &usecases.GetImageUseCaseImpl{}
 }
 
-func NewInsertImageUseCase(kafkaProducer events.EventProducer, database *mongo.Database, redisClient *redis.Client) usecases.InsertImageUseCase {
+func NewInsertImageUseCase(kafkaProducer events.EventProducer, database *mongo.Database, redisClient *redis.Client, awsEndpoint string) usecases.InsertImageUseCase {
 
 	wire.Build(
 		setS3Dependency,
@@ -98,4 +98,13 @@ func NewImageProducerImpl(bootstrapServer string) *kafka.ImageKafkaProducer {
 	)
 
 	return &kafka.ImageKafkaProducer{}
+}
+
+func NewS3StorageImpl(awsEndpoint string) *s3storage.S3StorageImpl {
+
+	wire.Build(
+		s3storage.NewS3StorageImpl,
+	)
+
+	return &s3storage.S3StorageImpl{}
 }

@@ -21,3 +21,7 @@ apache-kafka:
     image-process:
       name: ${IMG_PROC_KAFKA_TOPIC_NAME}
 
+aws:
+  region:
+  endpoint:
+

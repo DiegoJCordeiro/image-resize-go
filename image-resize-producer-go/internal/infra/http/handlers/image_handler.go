@@ -40,6 +40,11 @@ func (iih *ImageHandler) GetImage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if imageModel == nil {
+		_ = render.Render(w, r, handlersdto.NewErrorDTO(http.StatusNotFound, nil))
+		return
+	}
+
 	imageDto := handlersdto.NewImageDTO(
 		imageModel.UID,
 		imageModel.Object,

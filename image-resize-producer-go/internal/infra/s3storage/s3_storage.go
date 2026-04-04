@@ -13,6 +13,7 @@ import (
 	"github.com/DiegoJCordeiro/image-resizing-go-producer-api/internal/domain/models"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/credentials"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
 )
@@ -26,20 +27,27 @@ type S3StorageImpl struct {
 	s3Client   *s3.Client
 }
 
-func NewS3StorageImpl() *S3StorageImpl {
-
+func NewS3StorageImpl(awsEndpoint string) *S3StorageImpl {
 	options := []func(*config.LoadOptions) error{
 		config.WithRegion("us-east-1"),
 	}
 
-	configuration, err := config.LoadDefaultConfig(context.Background(), options...)
+	if awsEndpoint != "" {
+		options = append(options, config.WithCredentialsProvider(
+			credentials.NewStaticCredentialsProvider("test", "test", ""),
+		))
+	}
 
+	configuration, err := config.LoadDefaultConfig(context.Background(), options...)
 	if err != nil {
 		log.Fatalf("unable to load SDK config, %v", err)
 	}
 
 	s3Client := s3.NewFromConfig(configuration, func(o *s3.Options) {
 		o.UsePathStyle = true
+		if awsEndpoint != "" {
+			o.BaseEndpoint = aws.String(awsEndpoint)
+		}
 	})
 
 	return &S3StorageImpl{

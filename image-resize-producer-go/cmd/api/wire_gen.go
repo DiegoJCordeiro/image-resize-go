@@ -30,18 +30,18 @@ func NewImageHandler(getImageUseCase usecases.GetImageUseCase, insertImageUseCas
 }
 
 // UseCases
-func NewGetImageUseCase(database *mongo.Database, redisClient *redis.Client) usecases.GetImageUseCase {
+func NewGetImageUseCase(database *mongo.Database, redisClient *redis.Client, awsEndpoint string) usecases.GetImageUseCase {
 	imageMongoDBRepositoryImpl := persistence.NewImageMongoDBRepositoryImpl(database)
 	imageRedisBRepositoryImpl := cache.NewImageRedisBRepositoryImpl(redisClient)
-	s3StorageImpl := s3storage.NewS3StorageImpl()
+	s3StorageImpl := s3storage.NewS3StorageImpl(awsEndpoint)
 	getImageUseCase := usecases.NewGetImageUseCase(imageMongoDBRepositoryImpl, imageRedisBRepositoryImpl, s3StorageImpl)
 	return getImageUseCase
 }
 
-func NewInsertImageUseCase(kafkaProducer events.EventProducer, database *mongo.Database, redisClient *redis.Client) usecases.InsertImageUseCase {
+func NewInsertImageUseCase(kafkaProducer events.EventProducer, database *mongo.Database, redisClient *redis.Client, awsEndpoint string) usecases.InsertImageUseCase {
 	imageMongoDBRepositoryImpl := persistence.NewImageMongoDBRepositoryImpl(database)
 	imageRedisBRepositoryImpl := cache.NewImageRedisBRepositoryImpl(redisClient)
-	s3StorageImpl := s3storage.NewS3StorageImpl()
+	s3StorageImpl := s3storage.NewS3StorageImpl(awsEndpoint)
 	insertImageUseCase := usecases.NewInsertImageUseCase(kafkaProducer, imageMongoDBRepositoryImpl, imageRedisBRepositoryImpl, s3StorageImpl)
 	return insertImageUseCase
 }
@@ -57,6 +57,11 @@ func NewDeleteImageUseCase(database *mongo.Database, redisClient *redis.Client) 
 func NewImageProducerImpl(bootstrapServer string) *kafka.ImageKafkaProducer {
 	imageKafkaProducer := kafka.NewImageProducerImpl(bootstrapServer)
 	return imageKafkaProducer
+}
+
+func NewS3StorageImpl(awsEndpoint string) *s3storage.S3StorageImpl {
+	s3StorageImpl := s3storage.NewS3StorageImpl(awsEndpoint)
+	return s3StorageImpl
 }
 
 // wire.go:

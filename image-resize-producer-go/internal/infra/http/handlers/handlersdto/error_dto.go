@@ -17,6 +17,12 @@ func (e *ErrorDTO) Render(w http.ResponseWriter, r *http.Request) error {
 }
 
 func NewErrorDTO(status int, err error) *ErrorDTO {
+	if err == nil {
+		return &ErrorDTO{
+			Status:  status,
+			Message: "",
+		}
+	}
 	return &ErrorDTO{
 		Status:  status,
 		Message: err.Error(),

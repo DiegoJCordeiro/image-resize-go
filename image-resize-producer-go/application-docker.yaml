@@ -21,3 +21,6 @@ apache-kafka:
     image-process:
       name: ${IMG_PROC_KAFKA_TOPIC_NAME}
 
+aws:
+  region: us-east-1
+  endpoint: http://localstack:4566

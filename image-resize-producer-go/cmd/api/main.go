@@ -43,8 +43,8 @@ func main() {
 
 	imageKafkaProducer := NewImageProducerImpl(cfg.KafkaConfiguration.BootstrapServer)
 
-	getImageUseCase := NewGetImageUseCase(databaseMongoDB, redisClient)
-	insertImageUseCase := NewInsertImageUseCase(imageKafkaProducer, databaseMongoDB, redisClient)
+	getImageUseCase := NewGetImageUseCase(databaseMongoDB, redisClient, cfg.AWSConfig.Endpoint)
+	insertImageUseCase := NewInsertImageUseCase(imageKafkaProducer, databaseMongoDB, redisClient, cfg.AWSConfig.Endpoint)
 	deleteImageUseCase := NewDeleteImageUseCase(databaseMongoDB, redisClient)
 
 	imageHandlers := NewImageHandler(

@@ -13,6 +13,9 @@ type Configuration struct {
 	SRVRConfiguration struct {
 		Port string `mapstructure:"port"`
 	} `mapstructure:"server"`
+	AWSConfig struct {
+		Endpoint string `mapstructure:"endpoint"`
+	} `mapstructure:"aws"`
 	DBConfiguration struct {
 		RedisConfiguration struct {
 			Host     string `mapstructure:"host"`
