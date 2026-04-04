@@ -1,0 +1,23 @@
+server:
+  port: ':8080'
+
+database:
+  mongodb:
+    host: ${MONGODB_HOST}
+    name: ${MONGODB_DBNAME}
+    username: ${MONGODB_USR}
+    password: ${MONGODB_PWD}
+  redis:
+    dbn: ${REDIS_DBN}
+    host: ${REDIS_HOST}
+    password: ${REDIS_PWD}
+
+apache-kafka:
+  bootstrap-server: ${KAFKA_BOOTSTRAP_SERVER}
+  acknowledge:
+    producer: ${KAFKA_PRDCR_ACK}
+    consumer: ${KAFKA_CSMR_ACK}
+  topics:
+    image-process:
+      name: ${IMG_PROC_KAFKA_TOPIC_NAME}
+
