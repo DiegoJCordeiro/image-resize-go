@@ -1,0 +1,138 @@
+{
+  "info": {
+    "_postman_id": "959ebec9-0972-47f8-b4b9-909e44851ae4",
+    "name": "Image Resize API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "53220191",
+    "_collection_link": "https://go.postman.co/collection/53220191-959ebec9-0972-47f8-b4b9-909e44851ae4?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "1 - POST - INSERT IMAGE",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const jsonData = pm.response.json();",
+              "pm.environment.set(\"IMAGE_IDENTIFIER\", jsonData['iuid']);",
+              "console.log(\"Salvo:\", jsonData['iuid']);"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "multipart/form-data",
+            "type": "text"
+          },
+          {
+            "key": "x-process-type",
+            "value": "RESIZE",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "imageFile",
+              "type": "file",
+              "uuid": "33bf5674-3fb1-49e8-935c-427505e7fb1c",
+              "src": "/Users/diegocordeiro/Library/Mobile Documents/com~apple~CloudDocs/IRPF/rg_cpf_Davi_Lucca_A_Cordeiro.jpg"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:8080/v1/image",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "v1",
+            "image"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "2 - GET - FIND IMAGE",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const base64 = pm.response.json()['image_object'];",
+              "const template = `<img src=\"data:image/jpeg;base64,${base64}\" />`;",
+              "",
+              "// Renderiza na aba \"Visualize\"",
+              "pm.visualizer.set(template);"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/v1/image/{{IMAGE_IDENTIFIER}}",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "v1",
+            "image",
+            "{{IMAGE_IDENTIFIER}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "3 - DELETE - DELETE IMAGE",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/v1/image/{{IMAGE_IDENTIFIER}}",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "v1",
+            "image",
+            "{{IMAGE_IDENTIFIER}}"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

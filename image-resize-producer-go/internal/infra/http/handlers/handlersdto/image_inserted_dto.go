@@ -1,7 +1,7 @@
 package handlersdto
 
 type ImageInsertedDTO struct {
-	ImageUid string `json:"image-identifier"`
+	ImageUid string `json:"iuid"`
 }
 
 func NewImageInsertedDTO(imageUid string) *ImageInsertedDTO {
